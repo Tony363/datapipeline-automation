@@ -1,0 +1,13 @@
+[2020-07-14 12:51:26,622] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: datapipeline.download 2020-07-14T04:41:33.757061+00:00 [queued]>
+[2020-07-14 12:51:26,632] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: datapipeline.download 2020-07-14T04:41:33.757061+00:00 [queued]>
+[2020-07-14 12:51:26,632] {taskinstance.py:879} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 12:51:26,632] {taskinstance.py:880} INFO - Starting attempt 1 of 4
+[2020-07-14 12:51:26,632] {taskinstance.py:881} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 12:51:26,642] {taskinstance.py:900} INFO - Executing <Task(PythonOperator): download> on 2020-07-14T04:41:33.757061+00:00
+[2020-07-14 12:51:26,645] {standard_task_runner.py:53} INFO - Started process 27953 to run task
+[2020-07-14 12:51:26,681] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: datapipeline.download 2020-07-14T04:41:33.757061+00:00 [running]> tony-ThinkPad-X1-Carbon-7th
+[2020-07-14 12:51:32,663] {python_operator.py:114} INFO - Done. Returned value was: True
+[2020-07-14 12:51:32,672] {taskinstance.py:1065} INFO - Marking task as SUCCESS.dag_id=datapipeline, task_id=download, execution_date=20200714T044133, start_date=20200714T045126, end_date=20200714T045132
+[2020-07-14 12:51:36,612] {logging_mixin.py:112} INFO - [2020-07-14 12:51:36,612] {local_task_job.py:103} INFO - Task exited with return code 0

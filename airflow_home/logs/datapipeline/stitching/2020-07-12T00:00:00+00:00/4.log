@@ -1,0 +1,70 @@
+[2020-07-14 13:03:50,032] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: datapipeline.stitching 2020-07-12T00:00:00+00:00 [queued]>
+[2020-07-14 13:03:50,038] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: datapipeline.stitching 2020-07-12T00:00:00+00:00 [queued]>
+[2020-07-14 13:03:50,039] {taskinstance.py:879} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 13:03:50,039] {taskinstance.py:880} INFO - Starting attempt 4 of 4
+[2020-07-14 13:03:50,039] {taskinstance.py:881} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 13:03:50,046] {taskinstance.py:900} INFO - Executing <Task(BashOperator): stitching> on 2020-07-12T00:00:00+00:00
+[2020-07-14 13:03:50,048] {standard_task_runner.py:53} INFO - Started process 30690 to run task
+[2020-07-14 13:03:50,080] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: datapipeline.stitching 2020-07-12T00:00:00+00:00 [running]> tony-ThinkPad-X1-Carbon-7th
+[2020-07-14 13:03:50,089] {bash_operator.py:82} INFO - Tmp dir root location: 
+ /tmp
+[2020-07-14 13:03:50,089] {bash_operator.py:105} INFO - Temporary script location: /tmp/airflowtmp28bmupek/stitching85o7sdsx
+[2020-07-14 13:03:50,089] {bash_operator.py:115} INFO - Running command: python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/l1.mp4 /home/tony/opencv/input_vid/r1.mp4 --stop_frame 10
+[2020-07-14 13:03:50,095] {bash_operator.py:122} INFO - Output:
+[2020-07-14 13:03:52,878] {bash_operator.py:126} INFO - 
+[2020-07-14 13:03:52,878] {bash_operator.py:126} INFO - (python:30692): GStreamer-CRITICAL **: 13:03:52.878: gst_element_make_from_uri: assertion 'gst_uri_is_valid (uri)' failed
+[2020-07-14 13:03:52,958] {bash_operator.py:126} INFO - [ WARN:0] global /home/tony/opencv/modules/videoio/src/cap_gstreamer.cpp (1580) open OpenCV | GStreamer warning: cannot link elements
+[2020-07-14 13:04:11,118] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,118] {bash_operator.py:126} INFO - Stitching sample
+[2020-07-14 13:04:11,118] {bash_operator.py:126} INFO - ================
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - Show how to use Stitcher API from python in a simple way to stitch panoramas
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - or scans.
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - usage: stitching.py [-h] [--mode {0,1}] [--output OUTPUT]
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                     [--img IMG [IMG ...]] [--videos VIDEOS [VIDEOS ...]]
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                     [--stop_frame STOP_FRAME] [--view]
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - Stitching sample.
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO - optional arguments:
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -   -h, --help            show this help message and exit
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -   --mode {0,1}          Determines configuration of stitcher. The default is
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                         `PANORAMA` (0), mode suitable for creating photo
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                         panoramas. Option `SCANS` (1) is suitable for
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                         stitching materials under affine transformation, such
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -                         as scans.
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -   --output OUTPUT       Resulting image. The default is `result.jpg`.
+[2020-07-14 13:04:11,119] {bash_operator.py:126} INFO -   --img IMG [IMG ...]   input images
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -   --videos VIDEOS [VIDEOS ...]
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -                         input videos
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -   --stop_frame STOP_FRAME
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -                         limit of frames to stitch
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -   --view                view stitch
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - ['/home/tony/opencv/input_vid/l1.mp4', '/home/tony/opencv/input_vid/r1.mp4']
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.87 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.9 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.64 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.93 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 2.21 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 2.26 seconds.
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,120] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 2.23 seconds.
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 2.39 seconds.
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.9 seconds.
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO - 
+[2020-07-14 13:04:11,121] {bash_operator.py:126} INFO -  Time taken: 0 hours 0 minutes and 1.67 seconds.
+[2020-07-14 13:04:11,217] {bash_operator.py:130} INFO - Command exited with return code 0
+[2020-07-14 13:04:11,222] {taskinstance.py:1065} INFO - Marking task as SUCCESS.dag_id=datapipeline, task_id=stitching, execution_date=20200712T000000, start_date=20200714T050350, end_date=20200714T050411
+[2020-07-14 13:04:15,049] {logging_mixin.py:112} INFO - [2020-07-14 13:04:15,049] {local_task_job.py:103} INFO - Task exited with return code 0

@@ -1,0 +1,13 @@
+[2020-07-14 00:13:50,170] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: news_fetch.upload 2020-07-11T02:26:00+00:00 [queued]>
+[2020-07-14 00:13:50,177] {taskinstance.py:669} INFO - Dependencies all met for <TaskInstance: news_fetch.upload 2020-07-11T02:26:00+00:00 [queued]>
+[2020-07-14 00:13:50,177] {taskinstance.py:879} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 00:13:50,177] {taskinstance.py:880} INFO - Starting attempt 1 of 2
+[2020-07-14 00:13:50,177] {taskinstance.py:881} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-14 00:13:50,182] {taskinstance.py:900} INFO - Executing <Task(PythonOperator): upload> on 2020-07-11T02:26:00+00:00
+[2020-07-14 00:13:50,185] {standard_task_runner.py:53} INFO - Started process 5017 to run task
+[2020-07-14 00:13:50,212] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: news_fetch.upload 2020-07-11T02:26:00+00:00 [running]> tony-ThinkPad-X1-Carbon-7th
+[2020-07-14 00:13:55,217] {python_operator.py:114} INFO - Done. Returned value was: True
+[2020-07-14 00:13:55,225] {taskinstance.py:1065} INFO - Marking task as SUCCESS.dag_id=news_fetch, task_id=upload, execution_date=20200711T022600, start_date=20200713T161350, end_date=20200713T161355
+[2020-07-14 00:14:00,169] {logging_mixin.py:112} INFO - [2020-07-14 00:14:00,169] {local_task_job.py:103} INFO - Task exited with return code 0
