@@ -1,7 +1,7 @@
 import logging
 import boto3
 from botocore.exceptions import ClientError
-from secrets import aws_access_key_id,aws_secret_access_key
+from secrets import *
 
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
@@ -44,6 +44,7 @@ def download_file(bucket,file_name,object_name=None):
         response = s3_client.download_file(bucket,file_name,object_name)
     except ClientError as e:
         logging.error(e)
+
         return False
     return True
 
