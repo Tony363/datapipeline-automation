@@ -1,4 +1,4 @@
-import feedparser
+\import feedparser
 from airflow import DAG
 # Operators; we need this to operate!
 from airflow.operators.bash_operator import BashOperator
@@ -44,27 +44,39 @@ dag = DAG(
     schedule_interval=timedelta(minutes=1)
 )
 
-t1 = PythonOperator(
+t4 = PythonOperator(
     task_id='upload',
     depends_on_past=False,
     python_callable=upload_file,
     op_kwargs={
         'bucket':'tennisvideobucket',
-        'file_name':'/home/tony/Desktop/teamplay/yolov3/Homograph/images/court.png',
-        'object_name':'input-vid/images/court.png'
+        'file_name':'/home/ed/Desktop/output-vid/output.mp4',
+        'object_name':'output-vid/videos/output.mp4'
         },
     dag=dag
 )
 
-t2 = PythonOperator(
+t1 = PythonOperator(
     task_id='download',
     depends_on_past=False,
     python_callable=download_file,
     op_kwargs={
         'bucket':'tennisvideobucket',
-        'file_name': "input-vid/images/result.jpg",
-        'object_name':'/home/tony/Downloads/test2.jpg',
+        'file_name': "input-vid/videos/inputL.mp4",
+        'object_name':'/home/ed/Desktop/input-vid/inputL.mp4',
         },
+    retries=3,
+    dag=dag,
+)
+
+t2 = PythonOperatro(
+    task_id='download',
+    depends_on_past=False,
+    python_callable=download_file,
+    op_kwargs={
+	'bucket':'tennisvideobucket',
+	'file_name':'input-vid/videos/inputR.mp4',
+	'object_name':'/home/ed/Desktop/input-vid/inputR.mp4',
     retries=3,
     dag=dag,
 )
@@ -72,14 +84,10 @@ t2 = PythonOperator(
 t3 = BashOperator(
     task_id='stitching',
     depends_on_past=False,
-    bash_command='python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/l1.mp4 /home/tony/opencv/input_vid/r1.mp4 --stop_frame 10',
+    bash_command='python /home/ed/opencv-python-stitch/stitching.py --video /home/ed/Desktop/input_vid/inputL.mp4 /home/ed/Desktop/input_vid/inputR.mp4 --stop_frame 10',
     retries=3,
     dag=dag
 )
 
-# t1 >> t2
-# t1 >> t2
-
-t1.set_upstream(t2)
-t2.set_upstream(t3)
+t1 >> t2 >> t3 >> t4
 # It means that ‘t2’ depends on ‘t1’
