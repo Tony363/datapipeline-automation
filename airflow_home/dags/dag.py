@@ -4,12 +4,22 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
+# from airflow.operators.ssh_execute_operator import SSHExecuteOperator
+from airflow.utils.trigger_rule import TriggerRule
+# from airflow.contrib.hooks import SSHHook
 from textblob import TextBlob as tb
 from datetime import timedelta
 import re
 
 # AWS push to s3
-from s3_push import upload_file,download_file
+from s3_push import upload_file,download_file,didnotwork
+
+ALL_SUCCESS = 'all_success'
+ALL_FAILED = 'all_failed'
+ALL_DONE = 'all_done'
+ONE_SUCCESS = 'one_success'
+ONE_FAILED = 'one_failed'
+DUMMY = 'dummy'
 
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
@@ -47,14 +57,36 @@ dag = DAG(
 t1 = PythonOperator(
     task_id='upload',
     depends_on_past=False,
-    python_callable=upload_file,
+    python_callable=download_file,
     op_kwargs={
         'bucket':'tennisvideobucket',
-        'file_name':'/home/tony/Desktop/teamplay/yolov3/Homograph/images/court.png',
-        'object_name':'input-vid/images/court.png'
+        'file_name': "input-vid/videos/processR.mp4",
+        'object_name':'/home/tony/opencv/input_vid/processR.mp4',
         },
     dag=dag
 )
+
+t1_failed= PythonOperator(
+    task_id='it_did_work',
+    depends_on_past=False,
+    python_callable=didnotwork,
+    trigger_rule=TriggerRule.ALL_FAILED,
+    op_kwargs={
+        'didnotwork':None,
+    },
+    dag=dag,
+)
+
+# t2_failed = PythonOperator(
+#     task='didn\'t_work',
+#     depends_on_past=False,
+#     python_callable=didnotwork,
+#     trigger_rule=TriggerRule.ALL_FAILED,
+#     op_kwargs={
+#         'didnotwork':None,
+#     },
+#     dag=dag,
+# )
 
 t2 = PythonOperator(
     task_id='download',
@@ -62,24 +94,35 @@ t2 = PythonOperator(
     python_callable=download_file,
     op_kwargs={
         'bucket':'tennisvideobucket',
-        'file_name': "input-vid/images/result.jpg",
-        'object_name':'/home/tony/Downloads/test2.jpg',
+        'file_name': "input-vid/videos/processL.mp4",
+        'object_name':'/home/tony/opencv/input_vid/processL.mp4',
         },
-    retries=3,
     dag=dag,
 )
 
 t3 = BashOperator(
     task_id='stitching',
     depends_on_past=False,
-    bash_command='python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/l1.mp4 /home/tony/opencv/input_vid/r1.mp4 --stop_frame 10',
-    retries=3,
+    bash_command='python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/processL.mp4 /home/tony/opencv/input_vid/processR.mp4 --stop_frame 10',
     dag=dag
 )
 
-# t1 >> t2
-# t1 >> t2
+t4 = PythonOperator(
+    task_id='push_s3',
+    depends_on_past=False,
+    python_callable=upload_file,
+    op_kwargs={
+        'bucket':'tennisvideobucket',
+        'file_name': "outpud-vid/videos/output.mp4",
+        'object_name':'/home/tony/opencv/output/output.mp4',
+    },
+    dag=dag
+)
 
-t1.set_upstream(t2)
-t2.set_upstream(t3)
+t1 >> t2 >> t3 >> t4
+
+
+# t1.set_upstream(t1_failed)
+# t1_failed.set_upstream()
+# t2.set_upstream(t3)
 # It means that ‘t2’ depends on ‘t1’

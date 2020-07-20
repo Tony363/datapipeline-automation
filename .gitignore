@@ -1,1 +1,6 @@
 secrets.py
+*.db
+*__pycache__
+*.log
+*.pid
+logs/

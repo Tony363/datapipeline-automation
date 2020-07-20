@@ -48,5 +48,9 @@ def download_file(bucket,file_name,object_name=None):
         return False
     return True
 
+def didnotwork(didnotworked):
+    print('crap, this did not work')
+
+
     if __name__ == "__main__":
         pass
