@@ -41,7 +41,6 @@ flask-swagger==0.2.13
 Flask-WTF==0.14.3
 funcsigs==1.0.2
 future==0.18.2
-fvcore==0.1.1
 google-api-core==1.16.0
 google-api-python-client==1.8.0
 google-auth==1.11.3
