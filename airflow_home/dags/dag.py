@@ -3,10 +3,8 @@ from airflow import DAG
 # Operators; we need this to operate!
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from airflow.utils.dates import days_ago
-# from airflow.operators.ssh_execute_operator import SSHExecuteOperator
 from airflow.utils.trigger_rule import TriggerRule
-# from airflow.contrib.hooks import SSHHook
+from airflow.utils.dates import days_ago
 from textblob import TextBlob as tb
 from datetime import timedelta
 import re
@@ -54,25 +52,26 @@ dag = DAG(
     schedule_interval=timedelta(minutes=1)
 )
 
-t1 = PythonOperator(
-    task_id='upload',
-    depends_on_past=False,
-    python_callable=download_file,
-    op_kwargs={
-        'bucket':'tennisvideobucket',
-        'file_name': "input-vid/videos/processR.mp4",
-        'object_name':'/home/tony/opencv/input_vid/processR.mp4',
-        },
+t1 = BashOperator(
+    task_id='downloadL',
+    depends_on_past=True,
+    bash_command='aws s3 cp s3://tennisvideobucket/input-vid/videos/processL.mp4 /home/tony/opencv/input_vid/',
     dag=dag
 )
 
+t2 = BashOperator(
+    task_id='downloadR',
+    depends_on_past=True,
+    bash_command='aws s3 cp s3://tennisvideobucket/input-vid/videos/processR.mp4 /home/tony/opencv/input_vid',
+    dag=dag
+)
 t1_failed= PythonOperator(
     task_id='it_did_work',
     depends_on_past=False,
     python_callable=didnotwork,
     trigger_rule=TriggerRule.ALL_FAILED,
     op_kwargs={
-        'didnotwork':None,
+        'crap':None,
     },
     dag=dag,
 )
@@ -88,41 +87,48 @@ t1_failed= PythonOperator(
 #     dag=dag,
 # )
 
-t2 = PythonOperator(
-    task_id='download',
-    depends_on_past=False,
-    python_callable=download_file,
-    op_kwargs={
-        'bucket':'tennisvideobucket',
-        'file_name': "input-vid/videos/processL.mp4",
-        'object_name':'/home/tony/opencv/input_vid/processL.mp4',
-        },
-    dag=dag,
-)
+# t2 = PythonOperator(
+#     task_id='downloadR',
+#     depends_on_past=True,
+#     python_callable=download_file,
+#     op_kwargs={
+#         'bucket':'tennisvideobucket',
+#         'file_name': "input-vid/videos/processL.mp4",
+#         'object_name':'/home/tony/opencv/input_vid/processL.mp4',
+#         },
+#     dag=dag,
+# )
 
 t3 = BashOperator(
     task_id='stitching',
-    depends_on_past=False,
+    depends_on_past=True,
     bash_command='python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/processL.mp4 /home/tony/opencv/input_vid/processR.mp4 --stop_frame 10',
     dag=dag
 )
 
-t4 = PythonOperator(
-    task_id='push_s3',
-    depends_on_past=False,
-    python_callable=upload_file,
-    op_kwargs={
-        'bucket':'tennisvideobucket',
-        'file_name': "outpud-vid/videos/output.mp4",
-        'object_name':'/home/tony/opencv/output/output.mp4',
-    },
+# t4 = PythonOperator(
+#     task_id='push_s3',
+#     depends_on_past=True,
+#     python_callable=upload_file,
+#     op_kwargs={
+#         'bucket':'tennisvideobucket',
+#         'file_name': "output-vid/videos/output.mp4",
+#         'object_name':'/home/tony/opencv/output/output.mp4',
+#     },
+#     dag=dag
+# )
+
+t4 = BashOperator(
+    task_id='uploading',
+    depends_on_past=True,
+    bash_command='aws s3 mv /home/tony/opencv/output/output.mp4 s3://tennisvideobucket/output-vid/videos/',
     dag=dag
 )
 
 t1 >> t2 >> t3 >> t4
 
 
-# t1.set_upstream(t1_failed)
-# t1_failed.set_upstream()
-# t2.set_upstream(t3)
+t1.set_downstream(t2)
+t2.set_downstream(t3)
+t3.set_downstream(t4)
 # It means that ‘t2’ depends on ‘t1’

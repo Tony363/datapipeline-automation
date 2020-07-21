@@ -48,7 +48,7 @@ def download_file(bucket,file_name,object_name=None):
         return False
     return True
 
-def didnotwork(didnotworked):
+def didnotwork(crap):
     print('crap, this did not work')
 
 
