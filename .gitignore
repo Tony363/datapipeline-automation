@@ -1,1 +1,6 @@
 secrets.py
+*.log
+*.db
+*__pycache__
+*.save
+airflow_home/logs/scheduler/latest

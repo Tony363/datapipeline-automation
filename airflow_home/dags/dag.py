@@ -1,3 +1,4 @@
+
 import feedparser
 from airflow import DAG
 # Operators; we need this to operate!
@@ -10,7 +11,7 @@ import re
 
 # AWS push to s3
 from s3_push import upload_file,download_file
-
+from secrets import *
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
 default_args = {
@@ -41,45 +42,41 @@ dag = DAG(
     'datapipeline',
     default_args=default_args,
     description='datapipeline automation',
-    schedule_interval=timedelta(minutes=1)
+    schedule_interval=timedelta(minutes=1),
 )
 
-t1 = PythonOperator(
-    task_id='upload',
-    depends_on_past=False,
-    python_callable=upload_file,
-    op_kwargs={
-        'bucket':'tennisvideobucket',
-        'file_name':'/home/tony/Desktop/teamplay/yolov3/Homograph/images/court.png',
-        'object_name':'input-vid/images/court.png'
-        },
-    dag=dag
-)
-
-t2 = PythonOperator(
-    task_id='download',
-    depends_on_past=False,
-    python_callable=download_file,
-    op_kwargs={
-        'bucket':'tennisvideobucket',
-        'file_name': "input-vid/images/result.jpg",
-        'object_name':'/home/tony/Downloads/test2.jpg',
-        },
-    retries=3,
+t1 = BashOperator(
+    task_id='downloadL',
+    depends_on_past=True,
+    bash_command='aws s3 cp s3://tennisvideobucket/input-vid/videos/processL.mp4 /home/ubuntu/opencv-python-stitch/input-vid/',
     dag=dag,
+)
+
+t2 = BashOperator(
+    task_id='downloadR',
+    depends_on_past=True,
+    bash_command='aws s3 cp s3://tennisvideobucket/input-vid/videos/processR.mp4 /home/ubuntu/opencv-python-stitch/input-vid/',
+    dag=dag
 )
 
 t3 = BashOperator(
     task_id='stitching',
-    depends_on_past=False,
-    bash_command='python /home/tony/opencv/stitching.py --video /home/tony/opencv/input_vid/l1.mp4 /home/tony/opencv/input_vid/r1.mp4 --stop_frame 10',
-    retries=3,
+    depends_on_past=True,
+    bash_command='python /home/ubuntu/opencv-python-stitch/stitching.py --video /home/ubuntu/opencv-python-stitch/input-vid/processL.mp4 /home/ubuntu/opencv-python-stitch/input-vid/processR.mp4 --stop_frame 10',
     dag=dag
 )
 
-# t1 >> t2
+t4 = BashOperator(
+    task_id='upload_output',
+    depends_on_past=True,
+    bash_command='aws s3 mv /home/ubuntu/opencv-python-stitch/output/output.mp4 s3://tennisvideobucket/output-vid/videos/',
+    dag=dag
+)
+
+t1 >> t2 >> t3 >>t4
 # t1 >> t2
 
-t1.set_upstream(t2)
-t2.set_upstream(t3)
+t1.set_downstream(t2)
+t2.set_downstream(t3)
+t3.set_downstream(t4)
 # It means that ‘t2’ depends on ‘t1’

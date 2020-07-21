@@ -1,7 +1,10 @@
+
 import logging
 import boto3
 from botocore.exceptions import ClientError
-from secrets import aws_access_key_id,aws_secret_access_key
+
+
+
 
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
@@ -19,8 +22,8 @@ def upload_file(file_name, bucket, object_name=None):
     # Upload the file
     s3_client = boto3.client(
         's3',
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key,
+	aws_access_key_id='AKIAXRN4Y3F6INBAGXGD',
+        aws_secret_access_key='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'
         )
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
@@ -37,8 +40,8 @@ def download_file(bucket,file_name,object_name=None):
     # Upload the file
     s3_client = boto3.client(
         's3',
-        aws_access_key_id=aws_access_key_id,
-        aws_secret_access_key=aws_secret_access_key,
+	aws_access_key_id='AKIAXRN4Y3F6INBAGXGD',
+        aws_secret_access_key='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'
         )
     try: 
         response = s3_client.download_file(bucket,file_name,object_name)
