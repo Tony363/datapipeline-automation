@@ -24,7 +24,6 @@ cryptography==2.8
 cycler==0.10.0
 Cython==0.29.20
 defusedxml==0.6.0
--e git+https://github.com/facebookresearch/detectron2@72f1270a19f728203e14f5245e4581713a6f830d#egg=detectron2
 dill==0.3.1.1
 docutils==0.15.2
 feedparser==5.2.1
