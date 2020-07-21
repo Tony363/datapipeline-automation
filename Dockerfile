@@ -3,5 +3,7 @@ MAINTAINER Tony Siu
 RUN git clone https://github.com/Tony363/datapipeline-automation.git
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+COPY . /tmp/
 RUN export AIRFLOW_HOME=airflow_home/
