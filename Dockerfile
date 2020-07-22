@@ -39,14 +39,14 @@ ARG TONY-P=password
 ARG DAVID-U=teamplay
 ARG DAVID-P=password
 RUN sudo apt-get update && sudo apt-get install -y git
-RUN git clone https://github.com/Tony363/datapipeline-automation.git
-RUN git clone https://github.com/Akazz-L/yolov3.git
-RUN git clone https://github.com/Akazz-L/opencv-stitch.git
+RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
+RUN sudo git clone https://github.com/Akazz-L/yolov3.git
+RUN sudo git clone https://github.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
-RUN mkvirtualenv cv -p python3
-RUN workon cv
-RUN pip install numpy
+RUN sudo mkvirtualenv cv -p python3
+RUN sudo workon cv
+RUN sudo pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
 RUN cd opencv-python-stitch 
