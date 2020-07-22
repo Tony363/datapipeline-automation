@@ -7,8 +7,8 @@ RUN apt-get update && \
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 USER docker
 CMD /bin/bash
-RUN apt-get install build-essential cmake unzip pk-config
-RUN apt-get install libjpeg-dev libpng-dev libtiff-dev
+RUN sudo apt-get install build-essential cmake unzip pk-config
+RUN sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
 RUN sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
 RUN sudo apt-get install libxvidcore-dev libx264-dev
 RUN sudo apt-get install libgtk-3-dev
