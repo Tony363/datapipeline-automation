@@ -21,7 +21,7 @@ RUN sudo apt-get install -y python3-dev
 # download opencv and contribs
 RUN sudo apt-get update \
   && sudo apt-get install -y wget \
-  && rm -rf /var/lib/apt/lists/*
+  && sudo rm -rf /var/lib/apt/lists/*
 RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
 RUN unzip opencv_contrib.zip && mv opencv_contrib-4.3.0 opencv_contrib
 RUN wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
