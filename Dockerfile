@@ -1,12 +1,15 @@
 FROM ubuntu:18.04
 MAINTAINER Tony Siu
 
-# setting up ubuntu dependencies with python
-RUN apt-get update && \
-      apt-get -y install sudo
-RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+# setting up docker sudo user
+RUN apt-get update \
+ && apt-get install -y sudo
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
-CMD /bin/bash
+
+# setting up ubuntu dependencies with python
 RUN apt-get install build-essential cmake unzip pk-config
 RUN apt-get install libjpeg-dev libpng-dev libtiff-dev
 RUN apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
