@@ -19,10 +19,13 @@ RUN sudo apt-get install -y libatlas-base-dev gfortran
 RUN sudo apt-get install -y python3-dev 
 
 # download opencv and contribs
+RUN sudo apt-get update \
+  && sudo apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
 RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
 RUN unzip opencv_contrib.zip && mv opencv_contrib-4.3.0 opencv_contrib
 RUN wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
-RUN pip install virtualenv virtualenvwrapper
+RUN sudo pip install virtualenv virtualenvwrapper
 RUN rm -rf ~/get-pip.py ~/.cache/pip
 RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
 RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
@@ -31,9 +34,13 @@ RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 RUN source ~/.bashrc
 
 # clone code
-RUN git clone https://github.com/Tony363/datapipeline-automation.git
-RUN git clone https://github.com/Akazz-L/yolov3.git
-RUN git clone https://github.com/Akazz-L/opencv-stitch.git
+ARG TONY-U=teamplay
+ARG TONY-P=password
+ARG DAVID-U=teamplay
+ARG DAVID-P=password
+RUN git clone https://TONY-U:TONY-P@github.com/Tony363/datapipeline-automation.git
+RUN git clone https://DAVID-U:DAVID-P@github.com/Akazz-L/yolov3.git
+RUN git clone https://DAVID-U:DAVID-Pgithub.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
 RUN mkvirtualenv cv -p python3
