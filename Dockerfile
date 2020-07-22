@@ -10,7 +10,7 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
 # setting up ubuntu dependencies with python
-RUN sudo apt-get install build-essential cmake unzip pk-config
+RUN sudo apt-get install build-essential cmake unzip pkg-config
 RUN sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
 RUN sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
 RUN sudo apt-get install libxvidcore-dev libx264-dev
