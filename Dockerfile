@@ -10,13 +10,13 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
 # setting up ubuntu dependencies with python
-RUN sudo apt-get install build-essential cmake unzip pkg-config
-RUN sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
-RUN sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-RUN sudo apt-get install libxvidcore-dev libx264-dev
-RUN sudo apt-get install libgtk-3-dev
-RUN sudo apt-get install libatlas-base-dev gfortran
-RUN sudo apt-get install python3-dev
+RUN y | sudo apt-get install build-essential cmake unzip pkg-config
+RUN y | sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
+RUN y | sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+RUN y | sudo apt-get install libxvidcore-dev libx264-dev
+RUN y | sudo apt-get install libgtk-3-dev
+RUN y | sudo apt-get install libatlas-base-dev gfortran
+RUN y | sudo apt-get install python3-dev
 
 # download opencv and contribs
 RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
