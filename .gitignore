@@ -3,4 +3,5 @@ secrets.py
 *__pycache__
 *.log
 *.pid
+*.tar
 logs/
