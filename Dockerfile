@@ -38,6 +38,7 @@ ARG TONY-U=teamplay
 ARG TONY-P=password
 ARG DAVID-U=teamplay
 ARG DAVID-P=password
+RUN sudo apt install git-all
 RUN git clone https://github.com/Tony363/datapipeline-automation.git
 RUN git clone https://github.com/Akazz-L/yolov3.git
 RUN git clone https://github.com/Akazz-L/opencv-stitch.git
