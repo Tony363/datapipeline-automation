@@ -10,13 +10,13 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
 # setting up ubuntu dependencies with python
-RUN apt-get install build-essential cmake unzip pk-config
-RUN apt-get install libjpeg-dev libpng-dev libtiff-dev
-RUN apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-RUN apt-get install libxvidcore-dev libx264-dev
-RUN apt-get install libgtk-3-dev
-RUN apt-get install libatlas-base-dev gfortran
-RUN apt-get install python3-dev
+RUN sudo apt-get install build-essential cmake unzip pk-config
+RUN sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
+RUN sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+RUN sudo apt-get install libxvidcore-dev libx264-dev
+RUN sudo apt-get install libgtk-3-dev
+RUN sudo apt-get install libatlas-base-dev gfortran
+RUN sudo apt-get install python3-dev
 
 # download opencv and contribs
 RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
@@ -52,7 +52,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D PYTHON_EXECUTABLE=~/.virtualenvs/cv/bin/python \
 	-D BUILD_EXAMPLES=ON ..
 RUN make .
-RUN make install 
+RUN sudo make install 
 RUN ldconfig
 RUN mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
 RUN cd ~/.virtualenvs/cv/lib/python3.6/site-packages
