@@ -34,10 +34,9 @@ RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 RUN . ~/.bashrc
 
 # clone code
-ARG TONY-U=teamplay
-ARG TONY-P=password
-ARG DAVID-U=teamplay
-ARG DAVID-P=password
+
+ARG GIT-USER
+ARG GIT-PASSWORD
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
 RUN sudo git clone https://DAVID-U:DAVID-P@github.com/Akazz-L/yolov3.git
