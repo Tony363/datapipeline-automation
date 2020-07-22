@@ -38,9 +38,9 @@ ARG TONY-U=teamplay
 ARG TONY-P=password
 ARG DAVID-U=teamplay
 ARG DAVID-P=password
-RUN git clone https://TONY-U:TONY-P@github.com/Tony363/datapipeline-automation.git
-RUN git clone https://DAVID-U:DAVID-P@github.com/Akazz-L/yolov3.git
-RUN git clone https://DAVID-U:DAVID-Pgithub.com/Akazz-L/opencv-stitch.git
+RUN git clone https://github.com/Tony363/datapipeline-automation.git
+RUN git clone https://github.com/Akazz-L/yolov3.git
+RUN git clone https://github.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
 RUN mkvirtualenv cv -p python3
