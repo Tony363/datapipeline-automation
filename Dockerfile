@@ -31,7 +31,7 @@ RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
 RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
 RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
 RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
-RUN source ~/.bashrc
+RUN . ~/.bashrc
 
 # clone code
 ARG TONY-U=teamplay
