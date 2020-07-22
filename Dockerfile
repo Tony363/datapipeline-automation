@@ -7,20 +7,20 @@ RUN apt-get update && \
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 USER docker
 CMD /bin/bash
-RUN sudo apt-get install build-essential cmake unzip pk-config
-RUN sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
-RUN sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-RUN sudo apt-get install libxvidcore-dev libx264-dev
-RUN sudo apt-get install libgtk-3-dev
-RUN sudo apt-get install libatlas-base-dev gfortran
-RUN sudo apt-get install python3-dev
+RUN apt-get install build-essential cmake unzip pk-config
+RUN apt-get install libjpeg-dev libpng-dev libtiff-dev
+RUN apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+RUN apt-get install libxvidcore-dev libx264-dev
+RUN apt-get install libgtk-3-dev
+RUN apt-get install libatlas-base-dev gfortran
+RUN apt-get install python3-dev
 
 # download opencv and contribs
 RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
 RUN unzip opencv_contrib.zip && mv opencv_contrib-4.3.0 opencv_contrib
 RUN wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
-RUN sudo pip install virtualenv virtualenvwrapper
-RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
+RUN pip install virtualenv virtualenvwrapper
+RUN rm -rf ~/get-pip.py ~/.cache/pip
 RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
 RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
 RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.
@@ -49,9 +49,9 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D PYTHON_EXECUTABLE=~/.virtualenvs/cv/bin/python \
 	-D BUILD_EXAMPLES=ON ..
 RUN make .
-RUN sudo make install 
-RUN sudo ldconfig
-RUN sudo mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
+RUN make install 
+RUN ldconfig
+RUN mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
 RUN cd ~/.virtualenvs/cv/lib/python3.6/site-packages
 RUN ln /home/ubuntu/opencv-python-stitch/build/lib/python3/cv2.so cv2.so
 
