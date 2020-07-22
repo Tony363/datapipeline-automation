@@ -23,10 +23,10 @@ RUN sudo apt-get update \
   && sudo apt-get install -y wget \
   && sudo rm -rf /var/lib/apt/lists/*
 RUN sudo wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
-RUN unzip opencv_contrib.zip && mv opencv_contrib-4.3.0 opencv_contrib
+RUN sudo unzip opencv_contrib.zip && mv opencv_contrib-4.3.0 opencv_contrib
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo pip install virtualenv virtualenvwrapper
-RUN rm -rf ~/get-pip.py ~/.cache/pip
+RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
 RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
 RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
 RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.
