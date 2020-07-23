@@ -32,7 +32,8 @@ RUN pip install virtualenvwrapper
 ENV WORKON_HOME ~/.virtualenvs
 RUN sudo mkdir -p $WORKON_HOME
 RUN which virtualenvwrapper.sh
-RUN /bin/bash -c "sudo source /usr/local/bin/virtualenvwrapper.sh"
+SHELL ["/bin/bash", "-c", "source /usr/local/bin/virtualenvwrapper.sh"]
+# RUN /bin/bash -c "sudo source /usr/local/bin/virtualenvwrapper.sh"
 
 # make virtualenv cv
 # RUN mkvirtualenv -p`which python3` cv
