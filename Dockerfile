@@ -2,12 +2,12 @@ FROM ubuntu:18.04
 MAINTAINER Tony Siu
 
 # setting up docker sudo user
-# RUN apt-get update \
-#  && apt-get install -y sudo
-# RUN adduser --disabled-password --gecos '' docker
-# RUN adduser docker sudo
-# RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-# USER docker
+RUN apt-get update \
+ && apt-get install -y sudo
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER docker
 
 # setting up ubuntu dependencies with python
 # RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
