@@ -27,14 +27,19 @@ RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo pip install virtualenv virtualenvwrapper
 RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
-ENV VIRTUALENVWRAPPER_PYTHON /usr/bin/python3
-ENV VIRTUALENVWRAPPER_VIRTUALENV /usr/bin/virtualenv
+# ENV VIRTUALENVWRAPPER_PYTHON /usr/bin/python3
+# ENV VIRTUALENVWRAPPER_VIRTUALENV /usr/bin/virtualenv
 # RUN ["/bin/bash", "-c", "source", "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"]
-# RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
-# RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
-# RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
-# RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
-# RUN . ~/.bashrc
+RUN export WORKON_HOME=$HOME/.virtualenvs
+RUN export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+RUN source /usr/local/bin/virtualenvwrapper.sh
+RUN . ~/.bashrc
+
+# make virtualenv cv
+# RUN mkvirtualenv -p`which python3` cv
+RUN mkvirtualenv cv -p python3
+RUN workon cv
+RUN pip install numpy
 
 # clone code
 ARG GITUSER
@@ -45,11 +50,7 @@ RUN echo ${GITUSER} && echo ${GITTOKEN}
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
 
-# make virtualenv cv
-RUN mkvirtualenv -p`which python3` cv
-# RUN mkvirtualenv cv -p python3
-RUN workon cv
-RUN pip install numpy
+
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
 RUN cd opencv-python-stitch 
