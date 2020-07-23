@@ -10,28 +10,28 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
 # setting up ubuntu dependencies with python
-RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
-RUN sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev 
-RUN sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev 
-RUN sudo apt-get install -y libxvidcore-dev libx264-dev 
-RUN sudo apt-get install -y libgtk-3-dev 
-RUN sudo apt-get install -y libatlas-base-dev gfortran 
-RUN sudo apt-get install -y python3-dev 
+# RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
+# RUN sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev 
+# RUN sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev 
+# RUN sudo apt-get install -y libxvidcore-dev libx264-dev 
+# RUN sudo apt-get install -y libgtk-3-dev 
+# RUN sudo apt-get install -y libatlas-base-dev gfortran 
+# RUN sudo apt-get install -y python3-dev 
 
 # download opencv and contribs
-RUN sudo apt-get update \
-  && sudo apt-get install -y wget \
-  && sudo rm -rf /var/lib/apt/lists/*
-RUN sudo wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
-RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
-RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
-RUN sudo pip install virtualenv virtualenvwrapper
-RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
-RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
-RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
-RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
-RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
-RUN . ~/.bashrc
+# RUN sudo apt-get update \
+#   && sudo apt-get install -y wget \
+#   && sudo rm -rf /var/lib/apt/lists/*
+# RUN sudo wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
+# RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
+# RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
+# RUN sudo pip install virtualenv virtualenvwrapper
+# RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
+# RUN echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
+# RUN echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
+# RUN echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
+# RUN echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+# RUN . ~/.bashrc
 
 # clone code
 
@@ -39,8 +39,8 @@ ARG GIT-USER
 ARG GIT-TOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
-RUN sudo git clone git@github.com:Akazz-L/yolov3.git
-RUN sudo git clone git@github.com:Akazz-L/opencv-stitch.git
+RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/yolov3.git
+RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
 RUN sudo mkvirtualenv cv -p python3
