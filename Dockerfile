@@ -39,6 +39,7 @@ ARG GIT-USER
 ARG GIT-TOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
+RUN echo ${GIT-USER} && echo ${GIT-TOKEN}
 RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/opencv-stitch.git
 
