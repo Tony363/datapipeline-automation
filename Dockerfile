@@ -39,8 +39,8 @@ ARG GIT-USER
 ARG GIT-TOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
-RUN sudo git clone -y git@github.com:Akazz-L/yolov3.git
-RUN sudo git clone -y git@github.com:Akazz-L/opencv-stitch.git
+RUN sudo git clone git@github.com:Akazz-L/yolov3.git
+RUN sudo git clone git@github.com:Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
 RUN sudo mkvirtualenv cv -p python3
