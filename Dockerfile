@@ -27,13 +27,11 @@ RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo pip install virtualenv virtualenvwrapper
 RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
-# ENV VIRTUALENVWRAPPER_PYTHON /usr/bin/python3
-# ENV VIRTUALENVWRAPPER_VIRTUALENV /usr/bin/virtualenv
-# RUN ["/bin/bash", "-c", "source", "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"]
-RUN export WORKON_HOME=$HOME/.virtualenvs
-RUN export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+RUN pip install virtualenv 
+RUN pip install virtualenvwrapper
+ENV WORKON_HOME ~/.virtualenvs
+RUN mkdir -p $WORKON_HOME
 RUN /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh"
-RUN . ~/.bashrc
 
 # make virtualenv cv
 # RUN mkvirtualenv -p`which python3` cv
