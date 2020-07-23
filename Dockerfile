@@ -30,7 +30,7 @@ RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
 RUN pip install virtualenv 
 RUN pip install virtualenvwrapper
 ENV WORKON_HOME ~/.virtualenvs
-RUN mkdir -p $WORKON_HOME
+RUN sudo mkdir -p $WORKON_HOME
 RUN /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh"
 
 # make virtualenv cv
