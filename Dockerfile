@@ -10,13 +10,13 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER docker
 
 # setting up ubuntu dependencies with python
-# RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
-# RUN sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev 
-# RUN sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev 
-# RUN sudo apt-get install -y libxvidcore-dev libx264-dev 
-# RUN sudo apt-get install -y libgtk-3-dev 
-# RUN sudo apt-get install -y libatlas-base-dev gfortran 
-# RUN sudo apt-get install -y python3-dev 
+RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
+RUN sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev 
+RUN sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev 
+RUN sudo apt-get install -y libxvidcore-dev libx264-dev 
+RUN sudo apt-get install -y libgtk-3-dev 
+RUN sudo apt-get install -y libatlas-base-dev gfortran 
+RUN sudo apt-get install -y python3-dev 
 
 # download opencv and contribs
 RUN sudo apt-get update \
