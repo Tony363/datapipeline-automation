@@ -35,12 +35,6 @@ RUN which virtualenvwrapper.sh
 SHELL ["/bin/bash", "-c", "source /usr/local/bin/virtualenvwrapper.sh"]
 # RUN /bin/bash -c "sudo source /usr/local/bin/virtualenvwrapper.sh"
 
-# make virtualenv cv
-# RUN mkvirtualenv -p`which python3` cv
-RUN mkvirtualenv cv -p python3
-RUN workon cv
-RUN pip install numpy
-
 # clone code
 ARG GITUSER
 ARG GITTOKEN
@@ -49,7 +43,7 @@ RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
 RUN echo ${GITUSER} && echo ${GITTOKEN}
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
-
+RUN pip install numpy
 
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
