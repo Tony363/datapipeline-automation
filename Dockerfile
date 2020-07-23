@@ -32,7 +32,7 @@ RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
 # RUN ["/bin/bash", "-c", "source", "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"]
 RUN export WORKON_HOME=$HOME/.virtualenvs
 RUN export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-RUN . /usr/local/bin/virtualenvwrapper.sh
+RUN /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh"
 RUN . ~/.bashrc
 
 # make virtualenv cv
