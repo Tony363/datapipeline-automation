@@ -35,13 +35,13 @@ USER docker
 
 # clone code
 
-ARG GIT-USER
-ARG GIT-TOKEN
+ARG GITUSER
+ARG GITTOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
-RUN echo ${GIT-USER} && echo ${GIT-TOKEN}
-RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/yolov3.git
-RUN sudo git clone https://${GIT-USER}:${GIT-TOKEN}@github.com/Akazz-L/opencv-stitch.git
+RUN echo ${GITUSER} && echo ${GITTOKEN}
+RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
+RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
 RUN sudo mkvirtualenv cv -p python3
