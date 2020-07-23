@@ -43,9 +43,9 @@ RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
 
 # make virtualenv cv
-RUN sudo mkvirtualenv cv -p python3
-RUN sudo workon cv
-RUN sudo pip install numpy
+RUN mkvirtualenv cv -p python3
+RUN workon cv
+RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
 RUN cd opencv-python-stitch 
