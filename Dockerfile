@@ -45,8 +45,9 @@ RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stit
 RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
-WORKDIR opencv-python-stitch 
-RUN mkdir build && cd build
+WORKDIR ~/opencv-python-stitch 
+RUN mkdir build
+WORKDIR ~/opencv-pyton-stitch/build
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
 	-D INSTALL_PYTHON_EXAMPLES=ON \
@@ -59,11 +60,10 @@ RUN make .
 RUN sudo make install 
 RUN ldconfig
 RUN mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
-RUN cd ~/.virtualenvs/cv/lib/python3.6/site-packages
 RUN ln /home/ubuntu/opencv-python-stitch/build/lib/python3/cv2.so cv2.so
 
 # install all other python dependencies 
-RUN cd ~/datapipeline-automation
+WORKDIR ~/datapipeline-automation
 COPY requirements.txt /tmp/
 RUN pip install --requirement /tmp/requirements.txt
 COPY . /tmp/
