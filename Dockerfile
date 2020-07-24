@@ -45,7 +45,7 @@ RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stit
 RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
-RUN cd opencv-python-stitch 
+WORKDIR opencv-python-stitch 
 RUN mkdir build && cd build
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
