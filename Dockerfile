@@ -40,12 +40,14 @@ ARG GITTOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
 RUN echo ${GITUSER} && echo ${GITTOKEN}
+RUN pwd
+RUN sudo git clone https://${GITUSER}:{GITTOKEN}@github.com/Tony363/opencv-python-stitch.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
 RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
-WORKDIR ~/opencv-python-stitch 
+WORKDIR ~/opencv-python-stitch/ 
 RUN ls ~/opencv-python-stitch/
 RUN rm -r ~/opencv-python-stitch/build/
 RUN sudo mkdir build
