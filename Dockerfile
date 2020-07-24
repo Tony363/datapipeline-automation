@@ -35,36 +35,34 @@ RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
 # RUN /bin/bash -c "sudo source /usr/local/bin/virtualenvwrapper.sh"
 
 # clone code
+WORKDIR /
 ARG GITUSER
 ARG GITTOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo git clone https://github.com/Tony363/datapipeline-automation.git
 RUN echo ${GITUSER} && echo ${GITTOKEN}
-RUN pwd
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Tony363/opencv-python-stitch.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/yolov3.git
 RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stitch.git
 RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
-# WORKDIR ~/opencv-python-stitch/ 
-# RUN ls ~/opencv-python-stitch/
-# RUN rm -r ~/opencv-python-stitch/build/
-# RUN sudo mkdir build
-# WORKDIR ~/opencv-pyton-stitch/build
-# RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-# 	-D CMAKE_INSTALL_PREFIX=/usr/local \
-# 	-D INSTALL_PYTHON_EXAMPLES=ON \
-# 	-D INSTALL_C_EXAMPLES=OFF \
-# 	-D OPENCV_ENABLE_NONFREE=ON \
-# 	-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
-# 	-D PYTHON_EXECUTABLE=~/.virtualenvs/cv/bin/python \
-# 	-D BUILD_EXAMPLES=ON ..
-# RUN make .
-# RUN sudo make install 
-# RUN ldconfig
-# RUN mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
-# RUN ln /home/ubuntu/opencv-python-stitch/build/lib/python3/cv2.so cv2.so
+WORKDIR /opencv-python-stitch/ 
+RUN sudo rm -rf /opencv-python-stitch/build/
+RUN sudo mkdir build && cd build
+WORKDIR /opencv-python-stitch/build
+RUN sudo cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	-D CMAKE_INSTALL_PREFIX=/usr/local \
+	-D INSTALL_PYTHON_EXAMPLES=OFF \
+	-D INSTALL_C_EXAMPLES=OFF \
+	-D OPENCV_ENABLE_NONFREE=ON \
+	-D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules \
+	-D BUILD_EXAMPLES=ON ..
+RUN sudo make .
+RUN sudo make install 
+RUN sudo ldconfig
+RUN sudo mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
+RUN sudo ln cv2.so
 
 # install all other python dependencies 
 # WORKDIR ~/datapipeline-automation
