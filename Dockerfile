@@ -26,13 +26,6 @@ RUN sudo wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/arc
 RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
-# RUN pip install virtualenv 
-# RUN pip install virtualenvwrapper
-# ENV WORKON_HOME ~/.virtualenvs
-# RUN sudo mkdir -p $WORKON_HOME
-# RUN which virtualenvwrapper.sh
-# SHELL ["/bin/bash", "-c", "source /usr/local/bin/virtualenvwrapper.sh"]
-# RUN /bin/bash -c "sudo source /usr/local/bin/virtualenvwrapper.sh"
 
 # clone code
 WORKDIR /
@@ -61,9 +54,28 @@ RUN sudo cmake -D CMAKE_BUILD_TYPE=RELEASE \
 RUN sudo make .
 RUN sudo make install 
 RUN sudo ldconfig
-RUN sudo mv /lib/python3/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
+WORKDIR /opencv-python-stitch/build/lib/python3/
+RUN sudo mv cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
 RUN sudo ln cv2.so
 
+# Airflow setup
+RUN sudo apt-get install -y --no-install-recommends \
+        freetds-bin \
+        krb5-user \
+        ldap-utils \
+        libffi6 \
+        libsasl2-2 \
+        libsasl2-modules \
+        libssl1.1 \
+        locales  \
+        lsb-release \
+        sasl2-bin \
+        sqlite3 \
+        unixodbc
+RUN  pip install \
+ apache-airflow==1.10.10 \
+ --constraint \
+        https://raw.githubusercontent.com/apache/airflow/1.10.10/requirements/requirements-python3.7.txt
 # install all other python dependencies 
 # WORKDIR ~/datapipeline-automation
 # COPY requirements.txt /tmp/
