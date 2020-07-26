@@ -1,5 +1,34 @@
 FROM ubuntu:18.04
-MAINTAINER Tony Siu
+
+LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gnupg2 curl ca-certificates && \
+    curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - && \
+    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
+    echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
+    apt-get purge --autoremove -y curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# For libraries in the cuda-compat-* package: https://docs.nvidia.com/cuda/eula/index.html#attachment-a
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cuda-cudart-11-0=11.0.194-1 \
+    cuda-compat-11-0 \
+    && ln -s cuda-11.0 /usr/local/cuda && \
+    rm -rf /var/lib/apt/lists/*
+
+# Required for nvidia-docker v1
+RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
+    echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
+
+ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+ENV NVIDIA_REQUIRE_CUDA "cuda>=11.0 brand=tesla,driver>=418,driver<419 brand=tesla,driver>=440,driver<441"
+
 
 # setting up docker sudo user
 RUN apt-get update \
@@ -56,7 +85,6 @@ RUN sudo make install
 RUN sudo ldconfig
 WORKDIR /opencv-python-stitch/build/lib/python3/
 RUN sudo mv cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
-RUN sudo ln cv2.so
 
 # Airflow setup
 RUN sudo apt-get install -y --no-install-recommends \
@@ -76,9 +104,10 @@ RUN  pip install \
  apache-airflow==1.10.10 \
  --constraint \
         https://raw.githubusercontent.com/apache/airflow/1.10.10/requirements/requirements-python3.7.txt
+
 # install all other python dependencies 
-# WORKDIR ~/datapipeline-automation
-# COPY requirements.txt /tmp/
-# RUN pip install --requirement /tmp/requirements.txt
-# COPY . /tmp/
-# RUN export AIRFLOW_HOME=airflow_home/
+WORKDIR ~/datapipeline-automation
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+COPY . /tmp/
+RUN export AIRFLOW_HOME=airflow_home/
