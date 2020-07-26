@@ -8,8 +8,9 @@
 - Airflow Dags are currently setup to
     - download "processL.mp4" >>  download "processR.mp4" >> stitch to opencv-python-stitch/output/output.mp4 >> upload to s3://tennisvideobucket/output-vid/videos/output.mp4 
     - security accounts not yet set up
-- Dockerhub repo
+- Dockerhub && Github repo
   - https://hub.docker.com/repository/docker/pysolver33/data-automation-pipeline
+  - https://github.com/Tony363/datapipeline-automation
 - Docker Documentation
   - https://docs.docker.com/docker-hub/repos/
   - https://docs.docker.com/engine/reference/commandline/push/
