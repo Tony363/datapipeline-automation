@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM aarch64/ubuntu
 
 LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
 
@@ -36,7 +36,7 @@ RUN apt-get update \
 RUN adduser --disabled-password --gecos '' docker
 RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER docker
+USER teamplay
 
 # setting up ubuntu dependencies with python
 RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
@@ -53,11 +53,12 @@ RUN sudo apt-get update \
   && sudo rm -rf /var/lib/apt/lists/*
 RUN sudo wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.3.0.zip
 RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
+RUN sudo rm opencv_contrib.zip
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
 
 # clone code
-WORKDIR /
+RUN cd ~
 ARG GITUSER
 ARG GITTOKEN
 RUN sudo apt-get update && sudo apt-get install -y git
@@ -69,10 +70,10 @@ RUN sudo git clone https://${GITUSER}:${GITTOKEN}@github.com/Akazz-L/opencv-stit
 RUN pip install numpy
 
 # CMake and compile opencv 4.3.0 with custom python wrapper
-WORKDIR /opencv-python-stitch/ 
-RUN sudo rm -rf /opencv-python-stitch/build/
+RUN cd ~/opencv-python-stitch/ 
+RUN sudo rm -rf ~/opencv-python-stitch/build/
 RUN sudo mkdir build && cd build
-WORKDIR /opencv-python-stitch/build
+RUN cd ~/opencv-python-stitch/build
 RUN sudo cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=/usr/local \
 	-D INSTALL_PYTHON_EXAMPLES=OFF \
@@ -83,30 +84,30 @@ RUN sudo cmake -D CMAKE_BUILD_TYPE=RELEASE \
 RUN sudo make .
 RUN sudo make install 
 RUN sudo ldconfig
-WORKDIR /opencv-python-stitch/build/lib/python3/
+RUN cd ~/opencv-python-stitch/build/lib/python3/
 RUN sudo mv cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
 
 # Airflow setup
-RUN sudo apt-get install -y --no-install-recommends \
-        freetds-bin \
-        krb5-user \
-        ldap-utils \
-        libffi6 \
-        libsasl2-2 \
-        libsasl2-modules \
-        libssl1.1 \
-        locales  \
-        lsb-release \
-        sasl2-bin \
-        sqlite3 \
-        unixodbc
 RUN  pip install \
  apache-airflow==1.10.10 \
  --constraint \
         https://raw.githubusercontent.com/apache/airflow/1.10.10/requirements/requirements-python3.7.txt
-
+# RUN sudo apt-get install -y --no-install-recommends \
+#         freetds-bin \
+#         krb5-user \
+#         ldap-utils \
+#         libffi6 \
+#         libsasl2-2 \
+#         libsasl2-modules \
+#         libssl1.1 \
+#         locales  \
+#         lsb-release \
+#         sasl2-bin \
+#         sqlite3 \
+#         unixodbc
+        
 # install all other python dependencies 
-WORKDIR ~/datapipeline-automation
+RUN cd ~/datapipeline-automation
 COPY requirements.txt /tmp/
 RUN pip install --requirement /tmp/requirements.txt
 COPY . /tmp/
