@@ -1,42 +1,14 @@
-FROM aarch64/ubuntu
+FROM stereolabs/zed:3.0-devel-jetson-jp4.2
 
 LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gnupg2 curl ca-certificates && \
-    curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - && \
-    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
-    echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
-    apt-get purge --autoremove -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# For libraries in the cuda-compat-* package: https://docs.nvidia.com/cuda/eula/index.html#attachment-a
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    cuda-cudart-11-0=11.0.194-1 \
-    cuda-compat-11-0 \
-    && ln -s cuda-11.0 /usr/local/cuda && \
-    rm -rf /var/lib/apt/lists/*
-
-# Required for nvidia-docker v1
-RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
-    echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
-
-ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
-# nvidia-container-runtime
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=11.0 brand=tesla,driver>=418,driver<419 brand=tesla,driver>=440,driver<441"
-
-
 # setting up docker sudo user
-RUN apt-get update \
- && apt-get install -y sudo
-RUN adduser --disabled-password --gecos '' docker
-RUN adduser docker sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER teamplay
+#RUN apt-get update \
+# && apt-get install -y sudo
+#RUN adduser --disabled-password --gecos '' docker
+#RUN adduser docker sudo
+#RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+#USER docker
 
 # setting up ubuntu dependencies with python
 RUN sudo apt-get install -y build-essential cmake unzip pkg-config 
@@ -56,6 +28,14 @@ RUN sudo unzip opencv_contrib.zip && sudo mv opencv_contrib-4.3.0 opencv_contrib
 RUN sudo rm opencv_contrib.zip
 RUN sudo wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
 RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
+
+#Cuda Tookkit
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
+RUN sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
+RUN sudo dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.107-435.17.01_1.0-1_arm64.deb
+RUN sudo apt-key add /var/cuda-repo-10-2-local-10.2.107-435.17.01/7fa2af80.pub
+RUN sudo apt-get update
+RUN sudo apt-get -y install cuda
 
 # clone code
 RUN cd ~
@@ -79,7 +59,7 @@ RUN sudo cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D INSTALL_PYTHON_EXAMPLES=OFF \
 	-D INSTALL_C_EXAMPLES=OFF \
 	-D OPENCV_ENABLE_NONFREE=ON \
-	-D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules \
+	-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
 	-D BUILD_EXAMPLES=ON ..
 RUN sudo make .
 RUN sudo make install 
@@ -112,3 +92,4 @@ COPY requirements.txt /tmp/
 RUN pip install --requirement /tmp/requirements.txt
 COPY . /tmp/
 RUN export AIRFLOW_HOME=airflow_home/
+RUN pip install jetson-stats
